@@ -1,0 +1,88 @@
+:root,
+[data-theme='light'] {
+  --color-bg: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #eceef1;
+  --color-border: #dde1e6;
+  --color-border-strong: #c7ccd3;
+
+  --color-text-primary: #23272e;
+  --color-text-secondary: #565d68;
+  --color-text-muted: #8a919c;
+
+  --color-primary: #3b6ea5;
+  --color-primary-hover: #2f587f;
+  --color-primary-tint: #e9f0f7;
+
+  --color-secondary: #4d7c6f;
+  --color-secondary-tint: #eaf2f0;
+
+  --color-accent: #c97a3e;
+  --color-accent-tint: #f8ede3;
+
+  --color-success: #3f8f5f;
+  --color-success-tint: #e7f3ec;
+  --color-warning: #c98a2c;
+  --color-warning-tint: #faf1e2;
+  --color-danger: #b1493f;
+  --color-danger-tint: #f8e9e7;
+  --color-info: #3b7ea1;
+  --color-info-tint: #e8f1f5;
+
+  --shadow-sm: 0 1px 2px rgba(20, 22, 26, 0.06);
+  --shadow-md: 0 4px 12px rgba(20, 22, 26, 0.08);
+  --shadow-lg: 0 8px 24px rgba(20, 22, 26, 0.14);
+}
+
+[data-theme='dark'] {
+  --color-bg: #1b1e23;
+  --color-surface: #23262c;
+  --color-surface-sunken: #2c2f36;
+  --color-border: #383c44;
+  --color-border-strong: #474c55;
+
+  --color-text-primary: #e8e9ec;
+  --color-text-secondary: #b0b4bb;
+  --color-text-muted: #7d828b;
+
+  --color-primary: #7ba8d4;
+  --color-primary-hover: #99bfe0;
+  --color-primary-tint: #263340;
+
+  --color-secondary: #89b6a7;
+  --color-secondary-tint: #223330;
+
+  --color-accent: #dda06a;
+  --color-accent-tint: #362a20;
+
+  --color-success: #75c092;
+  --color-success-tint: #1f2f28;
+  --color-warning: #dfae6b;
+  --color-warning-tint: #332a1c;
+  --color-danger: #dd8c81;
+  --color-danger-tint: #35211f;
+  --color-info: #7fbcd9;
+  --color-info-tint: #1f2c33;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.32);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}

@@ -1,0 +1,209 @@
+@import './theme/tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 24px;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+button,
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+@media (max-width: 720px) {
+  .app-sidebar {
+    width: 68px !important;
+    height: 100vh !important;
+    position: sticky !important;
+    top: 0;
+    border-right: 1px solid var(--color-border);
+  }
+
+  .app-sidebar > div:first-child {
+    justify-content: center;
+    padding: var(--space-3) var(--space-2) !important;
+  }
+
+  .app-sidebar > div:first-child > div:last-child {
+    display: none;
+  }
+
+  .app-sidebar nav {
+    padding: 0 var(--space-2) !important;
+  }
+
+  .app-sidebar nav a,
+  .app-sidebar > div:last-child a {
+    justify-content: center;
+    padding: 10px 8px !important;
+    font-size: 0 !important;
+  }
+
+  .app-sidebar > div:last-child {
+    padding: var(--space-2) !important;
+  }
+
+  .app-topbar {
+    height: auto !important;
+    min-height: 56px;
+    padding: var(--space-3) var(--space-4) !important;
+    gap: var(--space-3);
+  }
+
+  .app-topbar-title {
+    min-width: 0;
+  }
+
+  .app-topbar-title h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 18px !important;
+  }
+
+  .app-topbar-actions {
+    flex-shrink: 0;
+    gap: var(--space-2) !important;
+  }
+
+  .app-topbar-actions > div:first-child button {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app-main {
+    padding: var(--space-4) !important;
+  }
+
+  .app-main > div > div[style*='grid-template-columns'] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .app-main input,
+  .app-main select,
+  .app-main textarea {
+    min-width: 0 !important;
+    width: 100%;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 42px;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+button {
+  font-family: inherit;
+}
+
+.label {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.caption {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-text-muted);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Scrollbars — quiet, not intrusive */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@keyframes arvash-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
