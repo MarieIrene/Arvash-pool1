@@ -59,6 +59,8 @@ export function TransactionsTable({ organizationId }: { organizationId?: string 
 
   const columns: Column<Transaction>[] = useMemo(
     () => [
+      { key: 'referenceNumber', header: 'Reference no.', sortValue: (t) => t.referenceNumber, render: (t) => <span style={{ fontWeight: 600 }}>{t.referenceNumber}</span> },
+      { key: 'referenceUuid', header: 'Reference UUID', sortValue: (t) => t.referenceUuid, render: (t) => <span className="table-code" title={t.referenceUuid}>{t.referenceUuid}</span> },
       { key: 'timestamp', header: 'Date / time', sortValue: (t) => t.timestamp, render: (t) => (
         <span className="text-secondary">{new Date(t.timestamp).toLocaleString()}</span>
       ) },

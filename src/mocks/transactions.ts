@@ -28,6 +28,8 @@ export const transactions: Transaction[] = Array.from({ length: 90 }, (_, i) => 
   const gamesCount = pick([1, 2, 3, 5]);
   return {
     id: `txn-${String(10000 + i)}`,
+    referenceUuid: `7b${String(i).padStart(2, '0')}9a4f-42d1-4c8e-9b3a-${String(100000000000 + i).padStart(12, '0')}`,
+    referenceNumber: `ARV-${String(10000 + i)}`,
     timestamp: isoMinutesAgo(randInt(1, 60 * 24 * 14)),
     organizationId: device.organizationId,
     organizationName: device.organizationName,

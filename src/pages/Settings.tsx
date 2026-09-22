@@ -43,7 +43,7 @@ export function Settings() {
 
   return (
     <AppShell title="Profile & settings">
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)', maxWidth: 640 }}>
+      <div className="settings-layout">
         <Card>
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-4)' }}>
             <div
@@ -67,7 +67,7 @@ export function Settings() {
               <div className="caption">Your personal profile information</div>
             </div>
           </div>
-          <form onSubmit={saveProfile} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+          <form onSubmit={saveProfile} className="settings-form-grid">
             <div>
               <label className="label" style={{ display: 'block', marginBottom: 6 }}>
                 Name
@@ -86,7 +86,7 @@ export function Settings() {
               </label>
               <input type="password" placeholder="••••••••" style={inputStyle} />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div className="settings-form-actions">
               <Button type="submit" variant="primary" size="sm">
                 Save profile
               </Button>
@@ -96,7 +96,7 @@ export function Settings() {
 
         <Card>
           <h3 style={{ marginBottom: 'var(--space-4)' }}>Notification preferences</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+          <div className="notification-grid">
             {NOTIF_ROWS.map((row) => (
               <label key={row.key} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 14, cursor: 'pointer' }}>
                 <input
@@ -113,7 +113,7 @@ export function Settings() {
         {!isAdmin && (
           <Card>
             <h3 style={{ marginBottom: 'var(--space-4)' }}>Business settings</h3>
-            <form onSubmit={saveBusiness} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+            <form onSubmit={saveBusiness} className="settings-form-grid">
               <div>
                 <label className="label" style={{ display: 'block', marginBottom: 6 }}>
                   Business name
@@ -126,7 +126,7 @@ export function Settings() {
                 </label>
                 <input type="number" value={pricePerGame} onChange={(e) => setPricePerGame(e.target.value)} style={inputStyle} />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div className="settings-form-actions">
                 <Button type="submit" variant="primary" size="sm">
                   Save business settings
                 </Button>
@@ -138,7 +138,7 @@ export function Settings() {
         {isAdmin && (
           <Card style={{ background: 'var(--color-surface-sunken)', border: '1px solid var(--color-border)' }}>
             <h3 style={{ marginBottom: 'var(--space-4)' }}>Platform settings</h3>
-            <form onSubmit={savePlatform} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+            <form onSubmit={savePlatform} className="settings-form-grid">
               <div>
                 <label className="label" style={{ display: 'block', marginBottom: 6 }}>
                   Default currency display
@@ -154,7 +154,7 @@ export function Settings() {
                 </label>
                 <input type="number" value={sessionTimeout} onChange={(e) => setSessionTimeout(e.target.value)} style={inputStyle} />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div className="settings-form-actions">
                 <Button type="submit" variant="primary" size="sm">
                   Save platform settings
                 </Button>

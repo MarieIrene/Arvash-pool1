@@ -84,6 +84,8 @@ export interface GameSession {
 
 export interface Transaction {
   id: string;
+  referenceUuid: string;
+  referenceNumber: string;
   timestamp: string;
   organizationId: string;
   organizationName: string;
