@@ -19,6 +19,20 @@ password with 4+ characters):
 - `admin@arvashpool.rw` — Platform Administrator
 - `owner@arvashpool.rw` — Pool Owner
 
+## Progressive Web App
+
+The production build includes a web app manifest and a service worker. Open the
+deployed site in a supported browser and choose its install option to add Arvash
+Pool to your device. After the first successful load, the service worker caches
+the app shell so the interface can reopen offline. It updates the cached app
+automatically when a new version is deployed.
+
+The current dashboard uses mock, in-memory data, so offline support covers the
+application shell and static assets, not reliable persistence or synchronization
+of dashboard data. To test installation locally, run `npm run build` followed
+by `npm run preview`; service workers require HTTPS or localhost, and are not
+enabled by the Vite development server.
+
 ## What's built
 
 Six screens, all wired to mock data:

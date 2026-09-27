@@ -1,6 +1,12 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, CircleDot, MonitorSmartphone, Wallet, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, CircleDot, Download, MonitorSmartphone, Wallet, ShieldCheck } from 'lucide-react';
 import { Button } from '../components/ui/Button';
+
+interface InstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+}
 
 const FEATURES = [
   {
@@ -21,6 +27,48 @@ const FEATURES = [
 ];
 
 export function Landing() {
+  const [installPrompt, setInstallPrompt] = useState<InstallPromptEvent | null>(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+  const [installMessage, setInstallMessage] = useState('');
+
+  useEffect(() => {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+      || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+    if (isStandalone) {
+      setIsInstalled(true);
+      return;
+    }
+
+    const handleInstallPrompt = (event: Event) => {
+      event.preventDefault();
+      setInstallPrompt(event as InstallPromptEvent);
+    };
+    const handleInstalled = () => {
+      setInstallPrompt(null);
+      setIsInstalled(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleInstallPrompt);
+    window.addEventListener('appinstalled', handleInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+      window.removeEventListener('appinstalled', handleInstalled);
+    };
+  }, []);
+
+  const handleInstall = async () => {
+    setInstallMessage('');
+    if (!installPrompt) {
+      setInstallMessage('Choose “Install Arvash Pool” from your browser menu.');
+      return;
+    }
+
+    await installPrompt.prompt();
+    const choice = await installPrompt.userChoice;
+    setInstallPrompt(null);
+    if (choice.outcome === 'accepted') setIsInstalled(true);
+  };
+
   return (
     <div className="landing-page">
       <header className="landing-header">
@@ -30,11 +78,19 @@ export function Landing() {
           </div>
           <span>Arvash Pool</span>
         </div>
-        <Link to="/login">
-          <Button variant="outline" size="sm">
-            Log in <ArrowUpRight size={15} />
-          </Button>
-        </Link>
+        <div className="landing-header-actions">
+          {!isInstalled && (
+            <Button variant="primary" size="sm" aria-label="Install Arvash Pool" onClick={handleInstall}>
+              <Download size={15} /> Install
+            </Button>
+          )}
+          <Link to="/login">
+            <Button variant="outline" size="sm">
+              Log in <ArrowUpRight size={15} />
+            </Button>
+          </Link>
+          {installMessage && <span className="install-message" role="status">{installMessage}</span>}
+        </div>
       </header>
 
       <main className="landing-main">
