@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutGrid,
   Building2,
@@ -12,7 +12,9 @@ import {
   Settings,
   MapPin,
   CircleDot,
+  MoreHorizontal,
 } from 'lucide-react';
+import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 
 interface NavItem {
@@ -43,23 +45,33 @@ const OWNER_NAV: NavItem[] = [
 
 export function Sidebar() {
   const { user } = useAuth();
+  const location = useLocation();
+  const [moreOpen, setMoreOpen] = useState(false);
   const items = user?.role === 'SUPERADMIN' ? ADMIN_NAV : OWNER_NAV;
+  const mobilePrimary = user?.role === 'SUPERADMIN'
+    ? items.filter((item) => ['/admin/dashboard', '/admin/devices', '/admin/transactions'].includes(item.to))
+    : items.filter((item) => ['/owner/dashboard', '/owner/devices', '/owner/transactions'].includes(item.to));
+  const mobileMore = items.filter((item) => !mobilePrimary.includes(item));
+  const settingsPath = user?.role === 'SUPERADMIN' ? '/admin/settings' : '/owner/settings';
+  const isMoreActive = location.pathname === settingsPath
+    || mobileMore.some((item) => location.pathname.startsWith(item.to));
 
   return (
-    <aside
-      className="app-sidebar"
-      style={{
-        width: 232,
-        flexShrink: 0,
-        background: 'var(--color-surface)',
-        borderRight: '1px solid var(--color-border)',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-        position: 'sticky',
-        top: 0,
-      }}
-    >
+    <>
+      <aside
+        className="app-sidebar"
+        style={{
+          width: 232,
+          flexShrink: 0,
+          background: 'var(--color-surface)',
+          borderRight: '1px solid var(--color-border)',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
+          position: 'sticky',
+          top: 0,
+        }}
+      >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 'var(--space-5) var(--space-4)' }}>
         <div
           style={{
@@ -108,9 +120,9 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div style={{ padding: 'var(--space-3)', borderTop: '1px solid var(--color-border)' }}>
+        <div style={{ padding: 'var(--space-3)', borderTop: '1px solid var(--color-border)' }}>
         <NavLink
-          to={user?.role === 'SUPERADMIN' ? '/admin/settings' : '/owner/settings'}
+          to={settingsPath}
           aria-label="Profile and settings"
           title="Profile and settings"
           style={({ isActive }) => ({
@@ -129,7 +141,44 @@ export function Sidebar() {
           <Settings size={20} strokeWidth={1.5} />
           Profile &amp; settings
         </NavLink>
-      </div>
-    </aside>
+        </div>
+      </aside>
+
+      <>
+        {moreOpen && <button className="mobile-nav-backdrop" aria-label="Close more navigation" onClick={() => setMoreOpen(false)} />}
+        {moreOpen && (
+          <nav className="mobile-nav-sheet" aria-label="More navigation">
+            {mobileMore.map((item) => (
+              <NavLink key={item.to} to={item.to} onClick={() => setMoreOpen(false)}>
+                <item.icon size={18} strokeWidth={1.75} />
+                <span>{item.label}</span>
+              </NavLink>
+            ))}
+            <NavLink to={settingsPath} onClick={() => setMoreOpen(false)}>
+              <Settings size={18} strokeWidth={1.75} />
+              <span>Settings</span>
+            </NavLink>
+          </nav>
+        )}
+        <nav className="mobile-nav" aria-label="Primary navigation">
+          {mobilePrimary.map((item) => (
+            <NavLink key={item.to} to={item.to} aria-label={item.label}>
+              <item.icon size={20} strokeWidth={1.75} />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+          <button
+            type="button"
+            className={moreOpen || isMoreActive ? 'active' : ''}
+            aria-label="More navigation"
+            aria-expanded={moreOpen}
+            onClick={() => setMoreOpen((open) => !open)}
+          >
+            <MoreHorizontal size={20} strokeWidth={1.75} />
+            <span>More</span>
+          </button>
+        </nav>
+      </>
+    </>
   );
 }
