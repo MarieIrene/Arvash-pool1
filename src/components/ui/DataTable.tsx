@@ -1,6 +1,6 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import { SkeletonRow } from './Skeleton';
+import { Skeleton } from './Skeleton';
 import { EmptyState, ErrorState } from './EmptyState';
 
 export interface Column<T> {
@@ -57,6 +57,7 @@ export function DataTable<T>({
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
   const pageRows = sorted.slice(page * pageSize, page * pageSize + pageSize);
+  const gridTemplateColumns = columns.map((column) => column.width ?? 'minmax(0, 1fr)').join(' ');
 
   const toggleSort = (key: string) => {
     if (sortKey === key) {
@@ -69,73 +70,74 @@ export function DataTable<T>({
 
   return (
     <div>
-      <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 640 }}>
-          <thead>
-            <tr>
+      <div className="data-table" role="table" aria-rowcount={pageRows.length + 1}>
+        <div
+          className="data-table-header"
+          role="row"
+          style={{ gridTemplateColumns }}
+        >
+          {columns.map((col) => (
+            <div
+              key={col.key}
+              role="columnheader"
+              aria-sort={sortKey === col.key ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined}
+              onClick={() => col.sortValue && toggleSort(col.key)}
+              onKeyDown={(event) => {
+                if (col.sortValue && (event.key === 'Enter' || event.key === ' ')) {
+                  event.preventDefault();
+                  toggleSort(col.key);
+                }
+              }}
+              tabIndex={col.sortValue ? 0 : undefined}
+              className={`data-table-heading${col.sortValue ? ' is-sortable' : ''}`}
+            >
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                {col.header}
+                {col.sortValue && sortKey === col.key && (
+                  sortDir === 'asc' ? <ChevronUp size={13} /> : <ChevronDown size={13} />
+                )}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div role="rowgroup">
+          {loading && Array.from({ length: 5 }).map((_, rowIndex) => (
+            <div
+              key={rowIndex}
+              className="data-table-row data-table-loading-row"
+              role="row"
+              style={{ gridTemplateColumns }}
+            >
               {columns.map((col) => (
-                <th
-                  key={col.key}
-                  onClick={() => col.sortValue && toggleSort(col.key)}
-                  style={{
-                    textAlign: 'left',
-                    padding: 'var(--space-3) var(--space-4)',
-                    borderBottom: '1px solid var(--color-border)',
-                    fontSize: 12,
-                    fontWeight: 600,
-                    letterSpacing: '0.04em',
-                    textTransform: 'uppercase',
-                    color: 'var(--color-text-muted)',
-                    cursor: col.sortValue ? 'pointer' : 'default',
-                    userSelect: 'none',
-                    width: col.width,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                    {col.header}
-                    {col.sortValue && sortKey === col.key && (
-                      sortDir === 'asc' ? <ChevronUp size={13} /> : <ChevronDown size={13} />
-                    )}
-                  </span>
-                </th>
+                <div key={col.key} className="data-table-cell" role="cell" aria-label={col.header}>
+                  <Skeleton />
+                </div>
               ))}
-            </tr>
-          </thead>
-          <tbody>
-            {loading &&
-              Array.from({ length: 5 }).map((_, i) => (
-                <tr key={i}>
-                  <td colSpan={columns.length}>
-                    <SkeletonRow columns={columns.length} />
-                  </td>
-                </tr>
+            </div>
+          ))}
+          {!loading && !error && pageRows.map((row) => (
+            <div
+              key={rowKey(row)}
+              role="row"
+              className={`data-table-row${onRowClick ? ' is-clickable' : ''}`}
+              style={{ gridTemplateColumns }}
+              onClick={() => onRowClick?.(row)}
+              onMouseEnter={(event) => {
+                if (onRowClick) event.currentTarget.style.background = 'var(--color-surface-sunken)';
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.background = 'transparent';
+              }}
+            >
+              {columns.map((col) => (
+                <div key={col.key} className="data-table-cell" role="cell" aria-label={col.header}>
+                  <span className="data-table-label" aria-hidden="true">{col.header}</span>
+                  <div className="data-table-cell-content">{col.render(row)}</div>
+                </div>
               ))}
-            {!loading && !error && pageRows.map((row) => (
-              <tr
-                key={rowKey(row)}
-                onClick={() => onRowClick?.(row)}
-                style={{
-                  cursor: onRowClick ? 'pointer' : 'default',
-                  borderBottom: '1px solid var(--color-border)',
-                  transition: 'background-color 0.1s ease',
-                }}
-                onMouseEnter={(e) => {
-                  if (onRowClick) e.currentTarget.style.background = 'var(--color-surface-sunken)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                }}
-              >
-                {columns.map((col) => (
-                  <td key={col.key} style={{ padding: 'var(--space-3) var(--space-4)', fontSize: 14 }}>
-                    {col.render(row)}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            </div>
+          ))}
+        </div>
       </div>
 
       {!loading && error && <ErrorState onRetry={onRetry} />}
