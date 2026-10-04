@@ -122,12 +122,6 @@ export function DataTable<T>({
               className={`data-table-row${onRowClick ? ' is-clickable' : ''}`}
               style={{ gridTemplateColumns }}
               onClick={() => onRowClick?.(row)}
-              onMouseEnter={(event) => {
-                if (onRowClick) event.currentTarget.style.background = 'var(--color-surface-sunken)';
-              }}
-              onMouseLeave={(event) => {
-                event.currentTarget.style.background = 'transparent';
-              }}
             >
               {columns.map((col) => (
                 <div key={col.key} className="data-table-cell" role="cell" aria-label={col.header}>

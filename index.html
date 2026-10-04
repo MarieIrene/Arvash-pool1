@@ -15,9 +15,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      html, body { height: 100%; margin: 0; }
+      .boot-screen { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #f5f7fa; color: #17212b; font: 600 16px Inter, sans-serif; }
+      .boot-brand { display: flex; align-items: center; gap: 10px; }
+      .boot-mark { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 6px; background: #3b6ea5; }
+      .boot-mark svg { width: 20px; height: 20px; color: white; }
+      .boot-indicator { width: 34px; height: 3px; overflow: hidden; border-radius: 2px; background: #dce3eb; }
+      .boot-indicator::after { content: ''; display: block; width: 45%; height: 100%; background: #3b6ea5; animation: boot-progress 1s ease-in-out infinite alternate; }
+      @keyframes boot-progress { from { transform: translateX(0); } to { transform: translateX(122%); } }
+      @media (prefers-reduced-motion: reduce) { .boot-indicator::after { animation: none; width: 100%; } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="boot-screen" role="status" aria-label="Loading Arvash Pool">
+        <div class="boot-brand"><span class="boot-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="2" fill="currentColor"></circle></svg></span><span>Arvash Pool</span></div>
+        <span class="boot-indicator" aria-hidden="true"></span>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {

@@ -6,6 +6,7 @@ import { useTheme } from '../../theme/ThemeContext';
 import { organizations } from '../../mocks/organizations';
 import { platformActivity } from '../../mocks/activity';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
+import { GlobalSearch } from './GlobalSearch';
 
 export function Topbar({ title }: { title: string }) {
   const { user, logout } = useAuth();
@@ -40,6 +41,7 @@ export function Topbar({ title }: { title: string }) {
       </div>
 
       <div className="app-topbar-actions" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+        <GlobalSearch />
         {user?.role === 'SUPERADMIN' && (
           <div style={{ position: 'relative' }}>
             <button
