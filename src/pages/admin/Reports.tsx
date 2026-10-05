@@ -158,7 +158,7 @@ export function Reports() {
             <input type="checkbox" checked={emailWeekly} onChange={(e) => setEmailWeekly(e.target.checked)} />
             Email me this report weekly
           </label>
-          <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+          <div id="report-exports" style={{ display: 'flex', gap: 'var(--space-2)' }}>
             <Button variant="outline" size="sm" onClick={() => toast.show('Report downloaded as PDF.', 'success')}>
               <Download size={14} strokeWidth={1.75} /> Download PDF
             </Button>

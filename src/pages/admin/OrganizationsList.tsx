@@ -92,7 +92,7 @@ export function OrganizationsList() {
     <AppShell title="Organizations">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
-          <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+          <div id="organization-filters" style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <div style={{ position: 'relative' }}>
               <Search size={15} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
               <input
@@ -115,7 +115,7 @@ export function OrganizationsList() {
               ))}
             </select>
           </div>
-          <Button variant="primary" size="sm" onClick={() => setOnboardOpen(true)}>
+          <Button id="onboard-owner" variant="primary" size="sm" onClick={() => setOnboardOpen(true)}>
             <Plus size={14} strokeWidth={1.75} /> Onboard new owner
           </Button>
         </div>

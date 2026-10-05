@@ -92,6 +92,7 @@ export function TransactionsTable({ organizationId }: { organizationId?: string 
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
       {stuckCount > 0 && (
           <div
+            id="stuck-payments"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -118,7 +119,7 @@ export function TransactionsTable({ organizationId }: { organizationId?: string 
           </div>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
+        <div id="transaction-filters" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
           <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
             <div style={{ position: 'relative' }}>
               <Search size={15} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />

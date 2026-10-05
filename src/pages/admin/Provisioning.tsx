@@ -116,7 +116,7 @@ export function Provisioning() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
         <Card>
           <h3 style={{ marginBottom: 'var(--space-4)' }}>Register new device</h3>
-          <form onSubmit={handleRegister} style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+          <form id="register-device" onSubmit={handleRegister} style={{ display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', alignItems: 'flex-end' }}>
             <div style={{ minWidth: 180 }}>
               <label className="label" style={{ display: 'block', marginBottom: 6 }}>
                 Serial number
@@ -168,7 +168,7 @@ export function Provisioning() {
             </div>
             <>
               <input ref={fileInputRef} type="file" accept=".csv" onChange={handleCsvFile} style={{ display: 'none' }} />
-              <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
+              <Button id="device-batch-import" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
                 <UploadCloud size={14} strokeWidth={1.75} /> Choose CSV file
               </Button>
             </>

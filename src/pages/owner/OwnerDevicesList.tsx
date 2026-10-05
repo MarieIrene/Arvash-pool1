@@ -53,7 +53,7 @@ export function OwnerDevicesList() {
   return (
     <AppShell title="My devices">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-        <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+        <div id="device-filters" style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
           <div style={{ position: 'relative' }}>
             <Search size={15} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
             <input

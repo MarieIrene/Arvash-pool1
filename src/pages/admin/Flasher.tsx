@@ -127,7 +127,7 @@ export function Flasher() {
         </Card>
 
         <Card>
-          <h3 style={{ marginBottom: 'var(--space-4)' }}>Flash devices</h3>
+          <h3 id="firmware-rollout" style={{ marginBottom: 'var(--space-4)' }}>Flash devices</h3>
 
           {step === 'targets' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>

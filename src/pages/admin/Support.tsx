@@ -60,7 +60,7 @@ export function Support() {
   return (
     <AppShell title="Support">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-        <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+        <div id="support-filters" style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
           <select value={type} onChange={(e) => setType(e.target.value as TicketType | '')} style={selectStyle}>
             <option value="">All types</option>
             {TYPES.map((t) => (

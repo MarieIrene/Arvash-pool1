@@ -23,7 +23,7 @@ import { tickets } from '../../mocks/tickets';
 import { transactions } from '../../mocks/transactions';
 import { vouchers } from '../../mocks/vouchers';
 
-type SearchCategory = 'All' | 'Devices' | 'Payments' | 'Organizations' | 'Support' | 'Locations' | 'Vouchers' | 'Firmware' | 'Activity';
+type SearchCategory = 'All' | 'Features' | 'Devices' | 'Payments' | 'Organizations' | 'Support' | 'Locations' | 'Vouchers' | 'Firmware' | 'Activity';
 interface SearchResult {
   id: string;
   category: Exclude<SearchCategory, 'All'>;
@@ -33,7 +33,7 @@ interface SearchResult {
   to: string;
 }
 
-const CATEGORIES: SearchCategory[] = ['All', 'Devices', 'Payments', 'Organizations', 'Support', 'Locations', 'Vouchers', 'Firmware', 'Activity'];
+const CATEGORIES: SearchCategory[] = ['All', 'Features', 'Devices', 'Payments', 'Organizations', 'Support', 'Locations', 'Vouchers', 'Firmware', 'Activity'];
 const PAGES = [
   { title: 'Dashboard', detail: 'Fleet overview and activity', admin: '/admin/dashboard', owner: '/owner/dashboard' },
   { title: 'Devices', detail: 'Monitor tables and device health', admin: '/admin/devices', owner: '/owner/devices' },
@@ -45,6 +45,18 @@ const PAGES = [
   { title: 'Live locations', detail: 'View connected locations', owner: '/owner/locations' },
   { title: 'Revenue', detail: 'Revenue performance', owner: '/owner/revenue' },
   { title: 'Settings', detail: 'Profile and preferences', admin: '/admin/settings', owner: '/owner/settings' },
+];
+const FEATURES = [
+  { title: 'Device search and filters', detail: 'Find devices by name, status, organization, and location', admin: '/admin/devices#device-filters', owner: '/owner/devices#device-filters' },
+  { title: 'Transaction search and filters', detail: 'Find payments by organization, table, phone, status, or provider', admin: '/admin/transactions#transaction-filters', owner: '/owner/transactions#transaction-filters' },
+  { title: 'Review stuck payments', detail: 'Reconcile successful payments with no recorded device session', admin: '/admin/transactions#stuck-payments', owner: '/owner/transactions#stuck-payments' },
+  { title: 'Filter organizations', detail: 'Search organizations by name, device health, or region', admin: '/admin/organizations#organization-filters' },
+  { title: 'Onboard a new owner', detail: 'Open the owner onboarding action', admin: '/admin/organizations#onboard-owner' },
+  { title: 'Register a device', detail: 'Add a device serial number and table name to the provisioning queue', admin: '/admin/provisioning#register-device' },
+  { title: 'Import devices from CSV', detail: 'Batch register pool tables from a CSV file', admin: '/admin/provisioning#device-batch-import' },
+  { title: 'Choose firmware rollout targets', detail: 'Select a device, organization, or fleet for a firmware update', admin: '/admin/flasher#firmware-rollout' },
+  { title: 'Filter support tickets', detail: 'Narrow the support queue by type, status, or organization', admin: '/admin/support#support-filters' },
+  { title: 'Export platform reports', detail: 'Download reports as PDF or CSV', admin: '/admin/reports#report-exports' },
 ];
 
 export function GlobalSearch() {
@@ -157,6 +169,17 @@ export function GlobalSearch() {
             to: '/admin/flasher',
           }))
         : []),
+      ...FEATURES.flatMap((feature) => {
+        const to = isAdmin ? feature.admin : feature.owner;
+        return to ? [{
+          id: to,
+          category: 'Features' as const,
+          title: feature.title,
+          detail: feature.detail,
+          searchable: `${feature.title} ${feature.detail}`,
+          to,
+        }] : [];
+      }),
     ];
     const terms = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
     return records.filter((result) => {
@@ -166,8 +189,8 @@ export function GlobalSearch() {
   }, [isAdmin, query, user?.organizationId]);
 
   const results = useMemo(
-    () => matchingRecords.filter((result) => category === 'All' || result.category === category),
-    [category, matchingRecords]
+    () => matchingRecords.filter((result) => (category === 'All' && (query.trim() || result.category !== 'Features')) || result.category === category),
+    [category, matchingRecords, query]
   );
 
   const pageResults = useMemo(
@@ -222,7 +245,7 @@ export function GlobalSearch() {
 
             <div className="global-search-filters" aria-label="Filter search results">
               {CATEGORIES.map((item) => {
-                const available = item === 'All' || isAdmin || ['Devices', 'Payments', 'Locations', 'Vouchers', 'Activity'].includes(item);
+                const available = item === 'All' || item === 'Features' || isAdmin || ['Devices', 'Payments', 'Locations', 'Vouchers', 'Activity'].includes(item);
                 if (!available) return null;
                 return (
                   <button
@@ -265,7 +288,7 @@ export function GlobalSearch() {
               )}
               {results.length > 0 && (
                 <div className="global-search-section">
-                  <div className="global-search-heading">{query.trim() ? 'Matching records' : 'Recent records'}</div>
+                  <div className="global-search-heading">{category === 'Features' ? 'Page features' : query.trim() ? 'Matching records' : 'Recent records'}</div>
                   {results.slice(0, 30).map((result) => {
                     const Icon = result.category === 'Devices' ? MonitorSmartphone
                       : result.category === 'Payments' ? CreditCard
