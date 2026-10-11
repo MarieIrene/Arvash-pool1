@@ -14,7 +14,7 @@
     <title>Arvash Pool — Fleet Management</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
       html, body { height: 100%; margin: 0; }
       .boot-screen { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: #f5f7fa; color: #17212b; font: 600 16px Inter, sans-serif; }
@@ -35,13 +35,22 @@
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
+    <script type="module">
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js').catch((error) => {
-            console.error('Service worker registration failed:', error);
+        if (import.meta.env.PROD) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js').catch((error) => {
+              console.error('Service worker registration failed:', error);
+            });
           });
-        });
+        } else {
+          navigator.serviceWorker.getRegistrations()
+            .then((registrations) => Promise.all([
+              ...registrations.map((registration) => registration.unregister()),
+              caches.delete('arvash-pool-v1'),
+            ]))
+            .catch((error) => console.error('Development service worker cleanup failed:', error));
+        }
       }
     </script>
   </body>
